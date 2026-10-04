@@ -1,0 +1,39 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+*.pfx
+*.pem
+*.key
+appsettings.*.local.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vs/
+*.swp
+*.user
+*.suo
+
+# Frontend (Angular)
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/coverage/
+npm-debug.log*
+
+# Backend (.NET)
+backend/**/bin/
+backend/**/obj/
+backend/**/TestResults/
+*.binlog
+
+# Collector (Python)
+collector/.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+collector/build/
+collector/dist/
+.pytest_cache/
