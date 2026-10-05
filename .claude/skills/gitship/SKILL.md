@@ -19,7 +19,8 @@ User input (optional hint for the message): $ARGUMENTS
 2. Run the **secret check** and **large-file check** on all changed and untracked files. Mark any
    blocked file as excluded.
 3. **Approval 1 (before staging):** show the full list of files to be staged (new, modified,
-   deleted), the excluded files and why, and any files that were already staged. Wait for the user
+   deleted), the excluded files and why, and any files that were already staged, following the
+   safety file's "Approval prompts" rule. Wait for the user
    to confirm. They may remove files from the list. On cancel, stop without staging anything.
 4. Stage the confirmed files by explicit path with `git add -- <paths>`.
 5. Run the secret check again on `git diff --cached`. Stop if anything matches.

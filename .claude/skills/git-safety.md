@@ -55,8 +55,14 @@ Co-Authored-By: <Claude Code's standard attribution trailer>
 - If changes span unrelated concerns, say so and offer to split them into separate commits.
 - Pick the type from what the diff actually does, not from file names alone.
 
-**Approval:** always show the full proposed message and the list of files it covers, then wait for
-the user to approve, edit, or cancel before running `git commit`.
+**Approval:** before running `git commit`, show the user **only the subject line** (in a code block),
+plus the list of files it covers. Still write the body and Co-Authored-By trailer into the commit,
+but do not show them. Wait for the user to approve, edit, or cancel.
+
+**Approval prompts:** ask in plain chat text and end the turn to wait for the user's reply. Do not
+use the AskUserQuestion dialog or its `preview` field for approvals; it can hide the content. This
+applies to the commit subject and to the `/gitship` file list. If offering a split, show each
+commit's subject line and files.
 
 **Committing:** pass the message with separate `-m` flags per paragraph (subject, body, trailer) so
 it works in any shell.
