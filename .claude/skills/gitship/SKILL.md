@@ -26,8 +26,10 @@ User input (optional hint for the message): $ARGUMENTS
 5. Run the secret check again on `git diff --cached`. Stop if anything matches.
 6. Draft a Conventional Commits message from the staged diff per the safety file, using the user's
    hint if given.
-7. **Approval 2 (before committing):** show the message and wait for approval. Apply any edits and
-   show it again. On cancel, stop and tell the user the files remain staged.
+7. **Approval 2 (before committing):** show the commit subject line in a code block, plus the list
+   of files it covers, and ask the user to approve, edit, or cancel. End the turn and wait; never
+   commit in the same turn the subject is shown. Apply any edits and show the subject again. On
+   cancel, stop and tell the user the files remain staged.
 8. Commit (`git commit -m <subject> -m <body> -m <trailer>`), then push following the push-safety
    rules.
 9. Report the commit hash, branch, and remote.
