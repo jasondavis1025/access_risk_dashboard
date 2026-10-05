@@ -48,8 +48,24 @@ tell the user. Proceed only after the user confirms the match is a false positiv
 Co-Authored-By: <Claude Code's standard attribution trailer>
 ```
 
-- **type:** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
-- **scope (optional):** the area touched, such as `frontend`, `backend`, `collector`, `db`, `docker`
+- **type:** use only these:
+
+  | Type       | Use for                                                   |
+  | ---------- | --------------------------------------------------------- |
+  | `feat`     | a new feature or capability                               |
+  | `fix`      | a bug fix                                                 |
+  | `docs`     | documentation only                                        |
+  | `style`    | formatting or whitespace, no behavior change              |
+  | `refactor` | code restructuring with no behavior change                |
+  | `perf`     | a performance improvement                                 |
+  | `test`     | adding or changing tests                                  |
+  | `build`    | build system, dependencies, or packaging                  |
+  | `ci`       | CI configuration and pipelines                            |
+  | `chore`    | maintenance and tooling, including `.claude/` changes     |
+  | `revert`   | reverting an earlier commit                               |
+
+- **scope (optional):** if used, must be a project area: `frontend`, `backend`, `collector`, `db`,
+  or `docker`. Never use `claude` as a scope; write `chore: ...` with no scope instead.
 - **summary:** imperative mood, lowercase, no trailing period, 72 characters or fewer
 - **breaking change:** add `!` after the type/scope and a `BREAKING CHANGE:` footer
 - If changes span unrelated concerns, say so and offer to split them into separate commits.
