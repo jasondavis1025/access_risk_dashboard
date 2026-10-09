@@ -3,8 +3,61 @@ h1 {
   margin: 0;
 }
 
+.spacer {
+  flex: 1 1 auto;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.signed-in {
+  font: var(--mat-sys-body-medium);
+  margin-right: 0.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 16rem;
+}
+
+.active {
+  background: var(--mat-sys-secondary-container);
+}
+
+.demo-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
+
+  p {
+    margin: 0;
+  }
+}
+
 main {
   max-width: 48rem;
   margin: 2rem auto;
   padding: 0 1rem;
+}
+
+footer {
+  max-width: 48rem;
+  margin: 0 auto 2rem;
+  padding: 0 1rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+@media (max-width: 599px) {
+  h1 {
+    font-size: 1rem;
+  }
+
+  .signed-in {
+    display: none;
+  }
 }

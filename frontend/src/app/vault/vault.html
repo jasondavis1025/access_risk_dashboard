@@ -1,0 +1,20 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title><h2>Vault</h2></mat-card-title>
+    <mat-card-subtitle>Placeholder</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>
+      Signed in (demo) as <strong data-testid="vault-email">{{ session()?.email }}</strong
+      >.
+    </p>
+    <p>
+      Vault items will appear here. This demo session lives only in memory, so logging out or
+      reloading the page ends it.
+    </p>
+    <p>
+      The route guard only controls what the browser shows. Real authorization must be enforced by
+      the backend.
+    </p>
+  </mat-card-content>
+</mat-card>
