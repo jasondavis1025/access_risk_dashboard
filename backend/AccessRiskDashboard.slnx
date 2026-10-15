@@ -2,4 +2,5 @@
   <Folder Name="/src/">
     <Project Path="src/AccessRiskDashboard.Api/AccessRiskDashboard.Api.csproj" />
   </Folder>
+  <Project Path="AccessRiskDashboard.Migrator/AccessRiskDashboard.Migrator.csproj" Id="643b34c1-5452-45a1-a6a6-55b9a1d15dfd" />
 </Solution>
