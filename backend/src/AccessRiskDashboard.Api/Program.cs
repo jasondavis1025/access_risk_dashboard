@@ -1,4 +1,5 @@
 using AccessRiskDashboard.Api.Data;
+using AccessRiskDashboard.Api.Repositories;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,12 @@ if (builder.Configuration["MSSQL_SA_PASSWORD"] is { Length: > 0 } password)
 {
     connectionString.Password = password;
 }
+
+var connectionFactory = new SqlConnectionFactory(connectionString.ConnectionString);
+
+builder.Services.AddSingleton(connectionFactory); //safe to do singleton because SqlConnectionFactory is stateless. it just holds the connection string and creates new SqlConnection objects when requested.
+
+builder.Services.AddScoped<UserRepository>(); //scoped lifetime is appropriate for repositories that use a DbContext or SqlConnection, because they are not thread-safe and should be disposed of after each request.
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString.ConnectionString));
