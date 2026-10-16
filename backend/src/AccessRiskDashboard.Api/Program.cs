@@ -85,9 +85,22 @@ if (app.Environment.IsDevelopment())
             CreatedAtUtc = DateTime.UtcNow
         };
 
-        await userRepository.CreateAsync(user);
+        try
+        {
+            await userRepository.CreateAsync(user); // Attempt the insert.
 
-        return Results.Ok(user);
+            return Results.Ok(user); // Return the created record.
+        }
+        catch (SqlException exception) when (
+            exception.Number == 2601 || exception.Number == 2627)
+        {
+            // SQL Server rejected a duplicate unique-index or constraint value.
+            return Results.Conflict(new
+            {
+                message = "An account with this email already exists."
+            });
+        }
+
     });
 
 }
