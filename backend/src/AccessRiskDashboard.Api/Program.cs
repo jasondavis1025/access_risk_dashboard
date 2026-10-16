@@ -1,8 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+using AccessRiskDashboard.Api.Contracts;
 using AccessRiskDashboard.Api.Data;
+using AccessRiskDashboard.Api.HealthChecks;
+using AccessRiskDashboard.Api.Models;
 using AccessRiskDashboard.Api.Repositories;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,11 +25,9 @@ builder.Services.AddSingleton(connectionFactory); //safe to do singleton because
 
 builder.Services.AddScoped<UserRepository>(); //scoped lifetime is appropriate for repositories that use a DbContext or SqlConnection, because they are not thread-safe and should be disposed of after each request.
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString.ConnectionString));
 
-builder.Services.AddHealthChecks()
-    .AddDbContextCheck<AppDbContext>("database", tags: ["ready"]);
+
+builder.Services.AddHealthChecks().AddCheck<DatabaseHealthCheck>("database", tags: ["ready"]);
 
 builder.Services.AddOpenApi();
 
@@ -35,6 +36,60 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    // Temporary development endpoint for testing the repository.
+    app.MapGet("/api/dev/users/by-email", async (
+        string email,
+        UserRepository userRepository) =>
+    {
+        // ASP.NET Core supplies the registered repository.
+        var user = await userRepository.GetByEmailAsync(email);
+
+        if (user is null)
+        {
+            return Results.NotFound();
+        }
+
+        return Results.Ok(user);
+    });
+
+    app.MapPost("/api/dev/users", async (
+    CreateUserRequest request,
+    UserRepository userRepository) =>
+    {
+        // Reject null, empty, or whitespace-only email values.
+        if (string.IsNullOrWhiteSpace(request.Email))
+        {
+            return Results.BadRequest(new { message = "Email is required." });
+        }
+
+        var email = request.Email.Trim(); // Remove leading and trailing whitespace.
+
+        // Reject values longer than our database column supports.
+        if (email.Length > 254)
+        {
+            return Results.BadRequest(new { message = "Email is too long." });
+        }
+
+        var emailValidator = new EmailAddressAttribute(); // Create .NET's email-format validator.
+
+        if (!emailValidator.IsValid(email)) // Check the format, not whether the mailbox exists.
+        {
+            return Results.BadRequest(new { message = "Enter a valid email address." });
+        }
+
+        var user = new User
+        {
+            Id = Guid.NewGuid(),
+            Email = email,
+            CreatedAtUtc = DateTime.UtcNow
+        };
+
+        await userRepository.CreateAsync(user);
+
+        return Results.Ok(user);
+    });
+
 }
 
 // Liveness: the API process is up. Does not touch the database.

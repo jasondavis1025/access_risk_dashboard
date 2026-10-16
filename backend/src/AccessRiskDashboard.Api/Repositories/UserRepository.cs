@@ -28,4 +28,15 @@ public sealed class UserRepository
             sql,
             new { Email = email });
     }
+    public async Task CreateAsync(User user)
+    {
+        using var connection = _connectionFactory.CreateConnection(); // Creates a connection and disposes of it when this method exits.
+
+        const string sql = """
+        INSERT INTO dbo.Users (Id, Email, CreatedAtUtc)
+        VALUES (@Id, @Email, @CreatedAtUtc);
+        """;
+
+        await connection.ExecuteAsync(sql, user); // Dapper takes parameter values from the User object's properties.
+    }
 }
